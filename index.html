@@ -205,6 +205,62 @@
     }
     .dot:first-child { background: var(--silver-3); }
 
+    /* ── Share button ── */
+    .share-btn {
+      position: absolute;
+      top: 16px; right: 36px;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      z-index: 2;
+    }
+
+    .share-btn:hover {
+      border-color: var(--silver-4);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .share-btn svg {
+      width: 12px; height: 12px;
+      stroke: var(--silver-3);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.3s;
+    }
+
+    .share-btn:hover svg { stroke: var(--silver-1); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(30,30,30,0.95);
+      border: 1px solid var(--line);
+      color: var(--silver-2);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 9px 18px;
+      border-radius: 2px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* ── Animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
@@ -220,6 +276,15 @@
 <body>
   <div class="card">
     <div class="corner-bl"></div>
+
+    <!-- Share button -->
+    <button class="share-btn" onclick="shareLink()" title="링크 공유">
+      <svg viewBox="0 0 24 24">
+        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
 
     <div class="header">
       <div class="name-ko">차시현</div>
@@ -273,5 +338,31 @@
       <div class="dot"></div>
     </div>
   </div>
+  <div class="toast" id="toast">Copied!</div>
+
+  <script>
+    async function shareLink() {
+      const url = window.location.href;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: '차시현 · Sihyun Cha', url });
+          return;
+        } catch (_) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch (_) {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+  </script>
 </body>
 </html>
