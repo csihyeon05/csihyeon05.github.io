@@ -1,8 +1,9 @@
 ## APB Forum 전용 웹 사이트 demo. 추후 연구소 계정으로 깃허브 생성 뒤, 그곳에서 호스팅.
-## 도메인은 따로 구입하거나
-## 내도메인.한국
-## 에서 지정 후 이용 예정
+#도메인은 따로 구입하거나
+#도메인.한국
+#에서 지정 후 이용 예정
 
+```
 csihyeon05.github.io/           ← GitHub Pages 루트
 ├── index.html                  ← Home
 ├── html/
@@ -16,3 +17,4 @@ csihyeon05.github.io/           ← GitHub Pages 루트
 │   └── main.js                 ← 전역 스크립트
 └── img_video/
     └── poster-2026.png
+```
